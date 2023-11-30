@@ -10,7 +10,7 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
-use tracing::{info, warn};
+use tracing::warn;
 
 #[derive(Clone)]
 struct AppState {
@@ -32,12 +32,12 @@ async fn handle_main() -> (StatusCode, Response) {
     (StatusCode::OK, Html(reply_html).into_response())
 }
 
-async fn delete_todo(State(state): State<AppState>, Path(id): Path<i32>) -> (StatusCode) {
+async fn delete_todo(State(state): State<AppState>, Path(id): Path<i32>) -> StatusCode {
     sqlx::query!("DELETE FROM TODOS WHERE id = $1", id)
         .execute(&state.db)
         .await
         .unwrap();
-    (StatusCode::OK)
+    StatusCode::OK
 }
 
 async fn list_todos(State(state): State<AppState>) -> (StatusCode, Response) {
