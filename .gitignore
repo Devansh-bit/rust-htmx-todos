@@ -3,4 +3,3 @@
 Secrets*.toml
 docker-compose.yaml
 .env
-/.sqlx

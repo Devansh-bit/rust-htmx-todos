@@ -78,7 +78,7 @@ async fn create_todo(
 
 #[shuttle_runtime::main]
 pub async fn axum(
-    #[shuttle_shared_db::Postgres] pool: PgPool,
+    #[shuttle_shared_db::Postgres(local_uri = "{secrets.db}")] pool: PgPool,
     #[shuttle_secrets::Secrets] _secrets: shuttle_secrets::SecretStore,
 ) -> shuttle_axum::ShuttleAxum {
     match sqlx::migrate!().run(&pool).await {
