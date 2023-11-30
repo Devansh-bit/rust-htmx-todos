@@ -40,27 +40,13 @@ async fn delete_todo(State(state): State<AppState>, Path(id): Path<i32>) -> Stat
     StatusCode::OK
 }
 
-async fn list_todos(State(state): State<AppState>) -> (StatusCode, Response) {
-    let todos = sqlx::query_as!(Todo, "SELECT * FROM TODOS")
-        .fetch_all(&state.db)
-        .await
-        .unwrap();
-    (
-        StatusCode::OK,
-        templates::Records { todos }
-            .render()
-            .unwrap()
-            .into_response(),
-    )
-}
-
 async fn create_todo(
     State(state): State<AppState>,
     Form(form): Form<TodoNew>,
 ) -> (StatusCode, Response) {
     let todo = sqlx::query_as!(
         Todo,
-        "INSERT INTO TODOS (description) VALUES ($1) RETURNING *",
+        "INSERT INTO TODOS (description) VALUES ($1) RETURNING id, description",
         form.description
     )
     .fetch_one(&state.db)
@@ -70,6 +56,21 @@ async fn create_todo(
     (
         StatusCode::OK,
         templates::TodoNewTemplate { todo }
+            .render()
+            .unwrap()
+            .into_response(),
+    )
+}
+
+async fn list_todos(State(state): State<AppState>) -> (StatusCode, Response) {
+    let todos = sqlx::query_as!(Todo, "SELECT id, description FROM TODOS")
+        .fetch_all(&state.db)
+        .await
+        .unwrap();
+
+    (
+        StatusCode::OK,
+        templates::Records { todos }
             .render()
             .unwrap()
             .into_response(),

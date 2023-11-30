@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT * FROM TODOS",
+  "query": "INSERT INTO TODOS (description) VALUES ($1) RETURNING id, description",
   "describe": {
     "columns": [
       {
@@ -15,12 +15,14 @@
       }
     ],
     "parameters": {
-      "Left": []
+      "Left": [
+        "Text"
+      ]
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "a606f02f7d0431d5cf579e86a7b1245742997153688ad4476e29474b46365676"
+  "hash": "70c17b612ee52f49d13c5fc5c6bf84c9b573b98da650dd680dec23d47fd2192d"
 }
