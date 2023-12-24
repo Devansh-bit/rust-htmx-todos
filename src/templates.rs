@@ -1,4 +1,4 @@
-use crate::Todo;
+use crate::{Todo, users::User};
 use askama::Template;
 
 #[derive(Template)]
@@ -10,8 +10,10 @@ pub struct Base;
 pub struct IndexTemplate;
 
 #[derive(Template)]
-#[template(path = "stream.html")]
-pub struct StreamTemplate;
+#[template(path = "logged_in.html")]
+pub struct UserLoggedIn {
+    pub user: User
+}
 
 #[derive(Template)]
 #[template(path = "todos.html")]

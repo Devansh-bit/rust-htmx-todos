@@ -1,5 +1,7 @@
 mod templates;
+mod users;
 
+use users::post_signup;
 use askama::Template;
 use axum::{
     extract::{Path, State},
@@ -96,6 +98,7 @@ pub async fn axum(
         .route("/todos", post(create_todo))
         .route("/todos", get(list_todos))
         .route("/todos/:id", delete(delete_todo))
+        .route("/signup", post(post_signup))
         .with_state(state);
 
     Ok(router.into())
